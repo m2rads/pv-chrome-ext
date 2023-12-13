@@ -9,18 +9,6 @@
     padding: 8px;
   }
   
-  .textbox {
-    width: 100%;
-    font-size: 12px;
-    margin: 0;
-    padding: 0px 2px;
-  }
-  
-  .textbox:focus {
-    outline: 0;
-    border-color: #66afe9;
-  }
-  
   .productAdvisor {
     margin: 5px 5px;
     padding: 3px;
@@ -40,15 +28,7 @@
   .productAdvisor-title {
     padding-left: 2px;
   }
-  
-  .productAdvisor-controls img {
-    margin: 0 4px;
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-  }
-  
-  .productAdvisor-controls {
-    flex: auto;
-    text-align: right;
+
+  .productList {
+    padding: 3px;
   }
