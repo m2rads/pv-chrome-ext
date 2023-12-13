@@ -1,0 +1,34 @@
+{
+    "name": "Product Advisor",
+    "version": "0.1.0",
+    "description": "Providing product information",
+    "permissions": ["storage", "tabs"],
+    "host_permissions": ["https://*.bestbuy.ca/*"],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "content_scripts": [
+      {
+        "matches": ["https://*.bestbuy.ca/*"],
+        "js": ["contentScript.js"]
+      }
+    ],
+    "web_accessible_resources": [
+      {
+        "resources": [
+          
+        ],
+        "matches": ["https://*.bestbuy.ca/*"]
+      }
+    ],
+    "action": {
+      "default_icon": {
+        "16": "assets/ext-icon.png",
+        "24": "assets/ext-icon.png",
+        "32": "assets/ext-icon.png"
+      },
+      "default_title": "Product Advisor",
+      "default_popup": "popup.html"
+    },
+    "manifest_version": 3
+}
