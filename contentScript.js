@@ -37,7 +37,14 @@
                 checkbox.addEventListener('change', (event) => {
                     if (event.target.checked) {
                         console.log('Product ' + (index + 1) + ' selected');
-                        // Add logic here for when a product is selected
+                        
+                        let productName = productCard.querySelector('.productName').innerText;
+                        // Save the selected product
+                        chrome.storage.sync.get({basket: []}, function(result) {
+                            let basket = result.basket;
+                            basket.push(productName);
+                            chrome.storage.sync.set({basket: basket});
+                        });
                     } else {
                         console.log('Product ' + (index + 1) + ' deselected');
                         // Add logic here for when a product is deselected
