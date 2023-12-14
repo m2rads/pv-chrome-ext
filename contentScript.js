@@ -10,39 +10,6 @@
         }
     });
 
-    // chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    //     if (message.action === "fetchData") {
-    //         fetchDataFromUrl(message.url, function(html) {
-    //             let processedData = processData(html);
-                
-    //             chrome.runtime.sendMessage({ action: "processedData", data: processedData });
-    //         });
-    //     }
-    // });
-    
-    // function fetchDataFromUrl(url, callback) {
-    //     fetch(url)
-    //         .then(response => response.text())
-    //         .then(data => {
-    //             callback(data);
-    //         })
-    //         .catch(error => console.error('Error fetching data:', error));
-    // }
-    
-
-    // function processData(html) {
-    //     const parser = new DOMParser();
-    //     const doc = parser.parseFromString(html, 'text/html');
-    
-    //     const descriptionDiv = doc.querySelector('.description_1N8uX');
-    //     if (descriptionDiv) {
-    //         console.log(descriptionDiv.textContent.trim())
-    //         return descriptionDiv.textContent.trim();
-    //     } else {
-    //         return "Description not found";
-    //     }
-    // }
-
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         if (message.action === "fetchData") {
             // Process each URL in the array and collect promises
@@ -106,7 +73,7 @@
                 checkbox.addEventListener('change', (event) => {
                     let productName = child.querySelector('.productItemName_3IZ3c').innerText;
                     let productHref = child.querySelector('.link_3hcyN').href;
-                    let productInfo = [index, productName, productHref]; // Include unique ID in productInfo
+                    let productInfo = [index, productName, productHref];
     
                     chrome.storage.sync.get({basket: []}, function(result) {
                         let basket = result.basket;
@@ -116,7 +83,6 @@
                             basket.push(productInfo);
                         } else {
                             console.log('Product ' + (index + 1) + ' deselected');
-                            // Remove the product based on unique ID
                             basket = basket.filter(item => item[0] !== index);
                         }
     
@@ -143,5 +109,4 @@
 
     newProductPageLoaded()
     
-
 })();
