@@ -10,6 +10,7 @@
         }
     });
 
+
     const newProductPageLoaded = () => {
         let productsRow = document.querySelector(".productsRow_DcaXn");
         if (productsRow) {
@@ -19,10 +20,9 @@
                 checkbox.type = 'checkbox';
                 checkbox.id = 'selectProduct' + index;
                 checkbox.name = 'selectProduct';
-                checkbox.className = 'selectedProduct'
-                checkbox.value = index;
-
-                // checkbox.style.position = 'absolute';
+                checkbox.className = 'selectedProduct';
+                checkbox.value = index; 
+    
                 checkbox.style.top = '5px';
                 checkbox.style.left = '5px';
                 checkbox.style.zIndex = '10';
@@ -35,27 +35,31 @@
                 // child.appendChild(label);
     
                 checkbox.addEventListener('change', (event) => {
-                    if (event.target.checked) {
-                        console.log('Product ' + (index + 1) + ' selected');
-                        
-                        let productName = productCard.querySelector('.productName').innerText;
-                        // Save the selected product
-                        chrome.storage.sync.get({basket: []}, function(result) {
-                            let basket = result.basket;
-                            basket.push(productName);
-                            chrome.storage.sync.set({basket: basket});
-                        });
-                    } else {
-                        console.log('Product ' + (index + 1) + ' deselected');
-                        // Add logic here for when a product is deselected
-                    }
+                    let productName = child.querySelector('.productItemName_3IZ3c').innerText;
+                    let productHref = child.querySelector('.link_3hcyN').href;
+                    let productInfo = [index, productName, productHref]; // Include unique ID in productInfo
+    
+                    chrome.storage.sync.get({basket: []}, function(result) {
+                        let basket = result.basket;
+    
+                        if (event.target.checked) {
+                            console.log('Product ' + (index + 1) + ' selected');
+                            basket.push(productInfo);
+                        } else {
+                            console.log('Product ' + (index + 1) + ' deselected');
+                            // Remove the product based on unique ID
+                            basket = basket.filter(item => item[0] !== index);
+                        }
+    
+                        chrome.storage.sync.set({basket: basket});
+                    });
                 });
             });
         } else {
             console.log("Element not found");
         }
-    }    
-
+    }
+    
     function waitForElementToDisplay(selector, time) {
         if(document.querySelector(selector) != null) {
             newProductPageLoaded();
@@ -67,5 +71,8 @@
             }, time);
         }
     }
+
+    newProductPageLoaded()
+    
 
 })();
