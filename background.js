@@ -8,42 +8,23 @@ chrome.tabs.onUpdated.addListener((tabId, tab) => {
             productPage: urlParameters.get("path"),
         });
     }
-  });
-
-
-// Fetching product spects
-// chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-//     if (request.action === 'fetchProductDetails') {
-//         const urls = request.urls;
-//         urls.forEach(url => {
-//             chrome.tabs.create({ url: url, active: false }, tab => {
-//                 // Wait for the tab to load and then inject the content script
-//                 chrome.tabs.onUpdated.addListener(function onUpdated(tabId, info) {
-//                     if (info.status === 'complete' && tabId === tab.id) {
-//                         chrome.tabs.executeScript(tab.id, {file: 'contentScript.js'}, () => {
-//                             // Optionally close the tab after scraping
-//                             chrome.tabs.remove(tab.id);
-//                         });
-//                         chrome.tabs.onUpdated.removeListener(onUpdated);
-//                     }
-//                 });
-//             });
-//         });
-//     }
-// });
-
-
+});
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.action === "processData") {
+    if (request.action === "processUrls") {
       processData(request.data);
     }
   });
-  
-  function processData(data) {
-    console.log("Received URLs in background.js: ", data);
-    chrome.storage.local.set({ "processedData": data }, function() {
-        console.log('Data is stored in chrome.storage');
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.action === "processedData") {
+        chrome.storage.local.set({ "processedData": message.data });
+        chrome.tabs.create({ url: 'compare.html' });
+    }
+});
+
+function processData(data) {
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, { action: "fetchData", urls: data });
     });
-    chrome.tabs.create({ url: 'compare.html' });
 }
