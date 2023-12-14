@@ -31,3 +31,26 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         });
     }
 });
+
+
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === "processData") {
+      processData(request.data);
+    }
+  });
+  
+  function processData(data) {
+    // Process your data here
+    let processedData = "Processed: " + data;
+  
+    // Store the processed data in chrome.storage.local
+    chrome.storage.local.set({ "processedData": processedData }, function() {
+      console.log('Data is stored in chrome.storage');
+    });
+  
+    // Open compare.html in a new tab
+    chrome.tabs.create({ url: 'compare.html' });
+  }
+  
+  

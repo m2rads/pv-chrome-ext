@@ -1,34 +1,32 @@
-const selectProduct = () => {
-    console.log("product selected ")
-}
-
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("popup is getting loaded")
     chrome.storage.sync.get({basket: []}, function(result) {
         let basket = result.basket;
         let list = document.getElementById('productList'); 
+        if (list) {
+            basket.forEach(productInfo => {
+                let fullProductName = productInfo[1];
+                let shortenedProductName = fullProductName.length > 10 ? fullProductName.substring(0, 10) + '...' : fullProductName;
+                
+                let listItem = document.createElement('li');
+                listItem.textContent = shortenedProductName;
 
-        basket.forEach(productInfo => {
-            let fullProductName = productInfo[1];
-            let shortenedProductName = fullProductName.length > 10 ? fullProductName.substring(0, 10) + '...' : fullProductName;
-            
-            let listItem = document.createElement('li');
-            listItem.textContent = shortenedProductName;
-
-            list.appendChild(listItem);
-            console.log("item appended");
-        });
+                list.appendChild(listItem);
+            });
+        }
     });
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('buttonContainer').addEventListener('click', (event) => {
-        if (event.target && event.target.id === 'clearStorage') {
-            clearStorage();
-        } else if (event.target && event.target.id === 'compare') {
-            openComparisonTab();
-        }
-    });
+    let buttonContainer = document.getElementById('buttonContainer')
+    if (buttonContainer) {
+        buttonContainer.addEventListener('click', (event) => {
+            if (event.target && event.target.id === 'clearStorage') {
+                clearStorage();
+            } else if (event.target && event.target.id === 'compare') {
+                openComparisonTab();
+            }
+        });
+    }
 });
 
 function clearStorage() {
@@ -41,6 +39,7 @@ function clearStorage() {
 }
 
 function openComparisonTab() {
-    chrome.tabs.create({url: './compare.html'});
+    // chrome.tabs.create({url: './compare.html'});
+    chrome.runtime.sendMessage({ action: "processData", data: "Hello World" });
 }
 
