@@ -43,6 +43,26 @@
     </div>
 
     <div class="chatButtonContainer">
-        <button class="chatButton">Ask Us!</button>
+        <button class="chatButton" id="chotbot">Ask Us!</button>
     </div>
+
+    <!-- Chat Button -->
+    <!-- <div class="chatButtonContainer">
+        <button class="chatButton" onclick="toggleChatbox()">Ask Us!</button>
+    </div> -->
+
+    <!-- Chatbox -->
+    <div id="chatbox" class="chatbox" style="display: none;">
+        <div class="chatbox-header">
+            <button onclick="toggleChatbox()">Close</button>
+        </div>
+        <div class="chatbox-messages">
+            <!-- Messages will go here -->
+        </div>
+        <div class="chatbox-input">
+            <input type="text" placeholder="Type your message here..." />
+            <button>Send</button>
+        </div>
+    </div>
+
 </div>
