@@ -10,7 +10,76 @@
         }
     });
 
+    // chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    //     if (message.action === "fetchData") {
+    //         fetchDataFromUrl(message.url, function(html) {
+    //             let processedData = processData(html);
+                
+    //             chrome.runtime.sendMessage({ action: "processedData", data: processedData });
+    //         });
+    //     }
+    // });
+    
+    // function fetchDataFromUrl(url, callback) {
+    //     fetch(url)
+    //         .then(response => response.text())
+    //         .then(data => {
+    //             callback(data);
+    //         })
+    //         .catch(error => console.error('Error fetching data:', error));
+    // }
+    
 
+    // function processData(html) {
+    //     const parser = new DOMParser();
+    //     const doc = parser.parseFromString(html, 'text/html');
+    
+    //     const descriptionDiv = doc.querySelector('.description_1N8uX');
+    //     if (descriptionDiv) {
+    //         console.log(descriptionDiv.textContent.trim())
+    //         return descriptionDiv.textContent.trim();
+    //     } else {
+    //         return "Description not found";
+    //     }
+    // }
+
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+        if (message.action === "fetchData") {
+            // Process each URL in the array and collect promises
+            let fetchPromises = message.urls.map(url => fetchDataFromUrl(url).then(processData));
+    
+            // Wait for all fetch operations to complete
+            Promise.all(fetchPromises)
+                .then(results => {
+                    // Send the array of processed data back to background script
+                    chrome.runtime.sendMessage({ action: "processedData", data: results });
+                })
+                .catch(error => console.error('Error processing data:', error));
+        }
+    });
+    
+    async function fetchDataFromUrl(url) {
+        try {
+            let response = await fetch(url);
+            return await response.text();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            return ''; // Return an empty string or handle error differently
+        }
+    }
+    
+    function processData(html) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+    
+        const descriptionDiv = doc.querySelector('.description_1N8uX');
+        if (descriptionDiv) {
+            return descriptionDiv.textContent.trim();
+        } else {
+            return "Description not found";
+        }
+    }    
+    
     const newProductPageLoaded = () => {
         let productsRow = document.querySelector(".productsRow_DcaXn");
         if (productsRow) {
