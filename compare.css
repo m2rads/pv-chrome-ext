@@ -1,0 +1,22 @@
+.productCardContainer {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    /* align-items: center; */
+    /* height: 100vh; */
+}
+
+.productCard {
+    min-height: 80%;
+    background-color: aliceblue;
+    border-radius: 5px;
+}
+
+.productAbout {
+    display: flex;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: end;
+}
