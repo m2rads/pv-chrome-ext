@@ -1,22 +1,65 @@
 .productCardContainer {
     display: flex;
-    justify-content: center;
-    padding: 10px;
-    /* align-items: center; */
-    /* height: 100vh; */
-}
+    gap: 20px; /* Spacing between cards */
+    justify-content: center; /* Center cards in the container */
+  }
+  
+  .productCard {
+    border: 1px solid #e1e1e1; /* Light grey border */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+    overflow: hidden; /* Ensures the child elements don't overflow */
+    width: 300px; /* Fixed width for all cards */
+    margin-bottom: 20px; /* Spacing below each card */
+  }
+  
+  .productImg img {
+    width: 100%; /* Makes the image responsive to the card width */
+    height: auto; /* Keeps the image aspect ratio */
+    display: block; /* Removes bottom space under the image */
+  }
+  
+  .productName h1 {
+    font-size: 1.2em; /* Adjusts the name font size */
+    margin: 0.5em; /* Spacing inside the name container */
+    text-align: center; /* Centers the product name text */
+  }
+  
+  .productOverview p {
+    font-size: 1em;
+    margin: 0.5em;
+    color: #666; /* Dark grey text for the overview */
+    text-align: justify; /* Justifies the overview text */
+  }
 
-.productCard {
-    min-height: 80%;
-    background-color: aliceblue;
-    border-radius: 5px;
-}
-
-.productAbout {
+  .productAbout {
     display: flex;
-}
+  }
+  
+  .productAbout, .productSpecs {
+    background-color: #f9f9f9; /* Light grey background for specs and about sections */
+    padding: 1em; /* Padding around the text */
+  }
+  
+  .about, .included, .specs {
+    list-style-type: none; /* Removes bullet points */
+    padding: 0; /* Removes default padding */
+    margin: 0; /* Removes default margin */
+  }
+  
+  .about h2, .included h2, .productSpecs h2 {
+    font-size: 1.1em; /* Slightly larger font size for section headers */
+    color: #333; /* Dark grey color for the headers */
+    margin-bottom: 0.5em; /* Spacing below the headers */
+  }
+  
+  li {
+    font-size: 0.9em; /* Smaller font size for list items */
+    border-bottom: 1px solid #e1e1e1; /* Separator for list items */
+    padding: 0.5em 0; /* Padding above and below the list text */
+  }
 
-.buttonContainer {
-    display: flex;
-    justify-content: end;
-}
+  ul {
+    padding: 2px;
+    margin: 5px;
+  }
