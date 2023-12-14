@@ -39,7 +39,15 @@ function clearStorage() {
 }
 
 function openComparisonTab() {
-    // chrome.tabs.create({url: './compare.html'});
-    chrome.runtime.sendMessage({ action: "processData", data: "Hello World" });
-}
+    chrome.storage.sync.get({ basket: [] }, function(result) {
+        let urlList = [];
+        let basket = result.basket;
+        basket.forEach(productInfo => {
+            let productUrl = productInfo[2];
+            console.log("producturl: ", productUrl);
+            urlList.push(productUrl);
+        });
 
+        chrome.runtime.sendMessage({ action: "processData", data: urlList });
+    });
+}
