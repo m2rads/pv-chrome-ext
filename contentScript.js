@@ -39,15 +39,15 @@
         const doc = parser.parseFromString(html, 'text/html');
 
         const imgElement = doc.querySelector('.displayingImage_3xp0y > img');
-        const included = doc.querySelector('.boxContents_2Q4kV')
-        console.log(included);
+        const priceContainer = doc.querySelector('[data-automation="product-price"]');
+        console.log(priceContainer);
 
         const productInfo = {
             productImg: imgElement?.src || '404',
             description: doc.querySelector('.description_1N8uX')?.textContent.trim() || '404',
             productAbout: extractContent(doc.querySelector('.productDescription_2WBlx')),
             whatsIncluded: extractContent(doc.querySelector('.boxContents_2Q4kV')),
-            productPrice: "$",
+            // productPrice: extractPrice(html),
             productName: doc.querySelector('.productName_2KoPa')?.textContent.trim() || '404'
         };
 
@@ -59,6 +59,13 @@
             return "Description not found";
         }
     }    
+
+    function extractPrice(html) {
+        const priceRegex = /\$\d{1,3}(,\d{3})*(\.\d{2})?/g; // The 'g' flag for global search
+        const matches = html.match(priceRegex);
+        console.log("all the matches: ", matches)
+        return matches && matches.length > 2 ? matches[2] : '404';
+    }
 
     function extractContent(containerElement) {
         if (!containerElement) return 'Content not found';
