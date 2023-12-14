@@ -39,8 +39,6 @@
         const doc = parser.parseFromString(html, 'text/html');
 
         const imgElement = doc.querySelector('.displayingImage_3xp0y > img');
-        const priceContainer = doc.querySelector('[data-automation="product-price"]');
-        console.log(priceContainer);
 
         const productInfo = {
             productImg: imgElement?.src || '404',
@@ -54,7 +52,7 @@
         console.log("productInfo: ", productInfo)
         
         if (productInfo) {
-            return "hello";
+            return productInfo;
         } else {
             return "Description not found";
         }
@@ -63,7 +61,7 @@
     function extractPrice(html) {
         const priceRegex = /\$\d{1,3}(,\d{3})*(\.\d{2})?/g; // The 'g' flag for global search
         const matches = html.match(priceRegex);
-        console.log("all the matches: ", matches)
+        // console.log("all the matches: ", matches)
         return matches && matches.length > 2 ? matches[2] : '404';
     }
 
