@@ -67,3 +67,24 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+  let buttonContainer = document.querySelector('.chatButtonContainer')
+  if (buttonContainer) {
+      buttonContainer.addEventListener('click', (event) => {
+          if (event.target && event.target.id === 'chotbot') {
+            toggleChatbox();
+          }
+      });
+  }
+});
+
+function toggleChatbox() {
+  var chatbox = document.getElementById('chatbox');
+  if (chatbox.style.display === "none") {
+      chatbox.style.display = "block";
+      setTimeout(function(){ chatbox.classList.add('active'); }, 10);
+  } else {
+      chatbox.classList.remove('active');
+      setTimeout(function(){ chatbox.style.display = "none"; }, 300);
+  }
+}
