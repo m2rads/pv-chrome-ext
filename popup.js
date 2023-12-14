@@ -48,6 +48,6 @@ function openComparisonTab() {
             urlList.push(productUrl);
         });
 
-        chrome.runtime.sendMessage({ action: "processData", data: urlList });
+        chrome.runtime.sendMessage({ action: "processUrls", data: urlList });
     });
 }
