@@ -18,7 +18,6 @@
             // Wait for all fetch operations to complete
             Promise.all(fetchPromises)
                 .then(results => {
-                    // Send the array of processed data back to background script
                     chrome.runtime.sendMessage({ action: "processedData", data: results });
                 })
                 .catch(error => console.error('Error processing data:', error));
@@ -31,21 +30,58 @@
             return await response.text();
         } catch (error) {
             console.error('Error fetching data:', error);
-            return ''; // Return an empty string or handle error differently
+            return '';
         }
     }
     
     function processData(html) {
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
-    
-        const descriptionDiv = doc.querySelector('.description_1N8uX');
-        if (descriptionDiv) {
-            return descriptionDiv.textContent.trim();
+
+        const imgElement = doc.querySelector('.displayingImage_3xp0y > img');
+        const included = doc.querySelector('.boxContents_2Q4kV')
+        console.log(included);
+
+        const productInfo = {
+            productImg: imgElement?.src || '404',
+            description: doc.querySelector('.description_1N8uX')?.textContent.trim() || '404',
+            productAbout: extractContent(doc.querySelector('.productDescription_2WBlx')),
+            whatsIncluded: extractContent(doc.querySelector('.boxContents_2Q4kV')),
+            productPrice: "$",
+            productName: doc.querySelector('.productName_2KoPa')?.textContent.trim() || '404'
+        };
+
+        console.log("productInfo: ", productInfo)
+        
+        if (productInfo) {
+            return "hello";
         } else {
             return "Description not found";
         }
     }    
+
+    function extractContent(containerElement) {
+        if (!containerElement) return 'Content not found';
+    
+        // Check if the container itself is a <ul>
+        if (containerElement.tagName === 'UL') {
+            const items = Array.from(containerElement.querySelectorAll('li'));
+            return items.map(item => item.textContent.trim()).join(', ');
+        }
+    
+        // Check if the container has a <ul> element
+        const ulElement = containerElement.querySelector('ul');
+        if (ulElement) {
+            const items = Array.from(ulElement.querySelectorAll('li'));
+            return items.map(item => item.textContent.trim()).join(', ');
+        }
+    
+        // If there is no <ul>, look for <p> tags and concatenate their content
+        const paragraphs = Array.from(containerElement.querySelectorAll('p'));
+        return paragraphs.map(p => p.textContent.trim()).join(', ');
+    }
+    
+    
     
     const newProductPageLoaded = () => {
         let productsRow = document.querySelector(".productsRow_DcaXn");
