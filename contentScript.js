@@ -10,19 +10,63 @@
         }
     });
 
+    // chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    //     if (message.action === "fetchData") {
+    //         // Process each URL in the array and collect promises
+    //         let fetchPromises = message.urls.map(url => fetchDataFromUrl(url).then(processData));
+    
+    //         // Wait for all fetch operations to complete
+    //         Promise.all(fetchPromises)
+    //             .then(results => {
+    //                 chrome.runtime.sendMessage({ action: "processedData", data: results });
+    //             })
+    //             .catch(error => console.error('Error processing data:', error));
+    //     }
+    // });
+
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         if (message.action === "fetchData") {
-            // Process each URL in the array and collect promises
             let fetchPromises = message.urls.map(url => fetchDataFromUrl(url).then(processData));
     
-            // Wait for all fetch operations to complete
             Promise.all(fetchPromises)
                 .then(results => {
+                    // Once all fetch operations are complete, send all results to the API
+                    sendDataToApi(results).catch(e => console.error('Error sending to API', e));
+                    console.log("info sent to api")
+    
+                    // Then send processed data back to background.js
                     chrome.runtime.sendMessage({ action: "processedData", data: results });
                 })
                 .catch(error => console.error('Error processing data:', error));
         }
+    
+        return true;
     });
+
+    async function sendDataToApi(data) {
+        console.log(data)
+        try {
+            const response = await fetch('http://localhost:3000/api/extension', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({productInfo: data})
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            // const clonedResponse = response.clone();
+            // const jsonData = await clonedResponse.json();
+            // console.log(jsonData);
+            
+            return await response.json();
+        } catch (error) {
+            console.error('Error sending data to API:', error);
+        }
+    }    
     
     async function fetchDataFromUrl(url) {
         try {
@@ -48,8 +92,6 @@
             // productPrice: extractPrice(html),
             productName: doc.querySelector('.productName_2KoPa')?.textContent.trim() || '404'
         };
-
-        console.log("productInfo: ", productInfo)
         
         if (productInfo) {
             return productInfo;
@@ -59,7 +101,7 @@
     }    
 
     function extractPrice(html) {
-        const priceRegex = /\$\d{1,3}(,\d{3})*(\.\d{2})?/g; // The 'g' flag for global search
+        const priceRegex = /\$\d{1,3}(,\d{3})*(\.\d{2})?/g;
         const matches = html.match(priceRegex);
         // console.log("all the matches: ", matches)
         return matches && matches.length > 2 ? matches[2] : '404';
