@@ -1,10 +1,7 @@
 ## Product Advisor
 A chrome extension that helps you make more informed decisions when shopping online.
 
-<video width="full" height="240" autoplay loop muted playsinline>
-  <source src="assets/pv-demo.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+![Product Advisor Demo](assets/pv-demo.gif)
 
 
 With the help of LLMS, Product Advisor guides you towards the right product you need. You can compare two or more products and learn which one suites you best. 
