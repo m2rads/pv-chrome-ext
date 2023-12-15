@@ -18,7 +18,7 @@
                 </div>
                 <div class="productAbout">
                     <div class="about">
-                        <h2>About</h2>
+                        <h2>Specs</h2>
                         <ul class="aboutList">
                             <li>first spec</li>
                         </ul>
@@ -30,12 +30,12 @@
                         </ul>
                     </div>
                 </div>
-                <div class="productSpecs">
+                <!-- <div class="productSpecs">
                     <h2>Specs</h2>
                     <ul class="specs">
                         <li>first spec</li>
                     </ul>
-                </div>
+                </div> -->
                 <!-- <div class="buttonContainer">
                     <button class="addToCard">Add To Card</button>
                 </div> -->
@@ -46,23 +46,21 @@
         <button class="chatButton" id="chotbot">Ask Us!</button>
     </div>
 
-    <!-- Chat Button -->
-    <!-- <div class="chatButtonContainer">
-        <button class="chatButton" onclick="toggleChatbox()">Ask Us!</button>
-    </div> -->
-
     <!-- Chatbox -->
     <div id="chatbox" class="chatbox" style="display: none;">
         <div class="chatbox-header">
-            <button onclick="toggleChatbox()">Close</button>
+            <button id="closeChatButton">Close</button>
         </div>
         <div class="chatbox-messages">
             <!-- Messages will go here -->
         </div>
         <div class="chatbox-input">
-            <input type="text" placeholder="Type your message here..." />
-            <button>Send</button>
+            <input type="text" id="messageInput" placeholder="Type your message here..." />
+            <button id="sendButton">
+                send
+            </button>
         </div>
     </div>
+    
 
 </div>
