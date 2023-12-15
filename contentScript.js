@@ -46,7 +46,7 @@
     async function sendDataToApi(data) {
         console.log(data)
         try {
-            const response = await fetch('http://localhost:3000/api/extension', {
+            const response = await fetch('https://product-advisor.vercel.app/api/extension', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
