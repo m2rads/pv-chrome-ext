@@ -145,7 +145,7 @@ function appendMessage(sender, message) {
 
 async function fetchChatbotResponse(message) {
   try {
-      let response = await fetch('http://localhost:3000/api/extension', {
+      let response = await fetch('https://product-advisor.vercel.app/api/extension', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'
