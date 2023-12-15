@@ -35,8 +35,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Populate Image, Name, Description
         productTemplate.querySelector('.productImg img').src = product.productImg || '#';
-        productTemplate.querySelector('.productName h1').textContent = product.productName || 'No name available';
-        productTemplate.querySelector('.productOverview p').textContent = product.description || 'No description available';
+        productTemplate.querySelector('.productName h1').textContent = truncateText(product.productName, 30)  || 'No name available';
+        productTemplate.querySelector('.productOverview p').textContent = truncateText(product.description, 100) || 'No description available';
 
         // Populate About
         if (product.productAbout) {
@@ -67,6 +67,14 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
+function truncateText(text, maxLength) {
+  if (text.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
+  } else {
+      return text;
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   let buttonContainer = document.querySelector('.chatButtonContainer')
   if (buttonContainer) {
@@ -78,6 +86,32 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  // Event listener for the close button in the chatbox header
+  let chatbox = document.querySelector('#chatbox');
+  if (chatbox) {
+      chatbox.addEventListener('click', (event) => {
+          if (event.target && event.target.id === 'closeChatButton') {
+              toggleChatbox();
+          }
+      });
+  }
+})
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Event listener for the send button in the chatbox input
+  let chatboxInput = document.querySelector('.chatbox-input');
+  if (chatboxInput) {
+      chatboxInput.addEventListener('click', (event) => {
+          if (event.target && event.target.id === 'sendButton') {
+              // Implement the functionality to send the message
+              sendMessage();
+          }
+      });
+  }
+})
+
+
 function toggleChatbox() {
   var chatbox = document.getElementById('chatbox');
   if (chatbox.style.display === "none") {
@@ -88,3 +122,41 @@ function toggleChatbox() {
       setTimeout(function(){ chatbox.style.display = "none"; }, 300);
   }
 }
+
+function sendMessage() {
+  var input = document.getElementById('messageInput');
+  var message = input.value.trim();
+
+  if (message) {
+      appendMessage("You", message);
+      fetchChatbotResponse(message);
+      input.value = "";
+  }
+}
+
+function appendMessage(sender, message) {
+  var messagesContainer = document.querySelector('.chatbox-messages');
+  var messageDiv = document.createElement('div');
+  messageDiv.classList.add('chat-message');
+  messageDiv.innerHTML = `<strong>${sender}:</strong> ${message}`;
+  messagesContainer.appendChild(messageDiv);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+async function fetchChatbotResponse(message) {
+  try {
+      let response = await fetch('http://localhost:3000/api/extension', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ chatInput: message })
+      });
+      let data = await response.json();
+      appendMessage("Best Pal", data.response);
+  } catch (error) {
+      console.error('Error:', error);
+      appendMessage("Best Pal", "Sorry, I'm having trouble responding right now.");
+  }
+}
+
