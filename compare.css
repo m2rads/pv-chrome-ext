@@ -26,15 +26,15 @@
   }
   
   .productOverview p {
-    font-size: 1em;
+    font-size: 1.25em;
     margin: 0.5em;
     color: #666; /* Dark grey text for the overview */
     text-align: justify; /* Justifies the overview text */
   }
 
-  .productAbout {
+  /* .productAbout {
     display: flex;
-  }
+  } */
   
   .productAbout, .productSpecs {
     background-color: #f9f9f9; /* Light grey background for specs and about sections */
@@ -52,11 +52,15 @@
     color: #333; /* Dark grey color for the headers */
     margin-bottom: 0.5em; /* Spacing below the headers */
   }
+
+li {
+    line-height: 1.5em;
+  }
   
-  li {
-    font-size: 0.9em; /* Smaller font size for list items */
-    border-bottom: 1px solid #e1e1e1; /* Separator for list items */
-    padding: 0.5em 0; /* Padding above and below the list text */
+  .included li {
+    font-size: 0.9em;
+    border-bottom: 1px solid #e1e1e1; 
+    padding: 0.5em 0; 
   }
 
   ul {
@@ -109,15 +113,16 @@
 }
 
 /* chatbox */
-
 .chatbox {
     position: fixed;
-    bottom: 0;
+    bottom: 50;
+    right: 50;
     right: 10px;
-    width: 300px;
-    height: 400px;
+    width: 400px;
+    height: 500px;
     background-color: white;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
     transition: transform 0.3s ease-in-out;
     transform: translateY(100%);
     z-index: 999; /* just below the button to open it */
@@ -127,6 +132,7 @@
     padding: 10px;
     background-color: #333;
     color: white;
+    border-radius: 8px 8px 0 0 ;
 }
 
 .chatbox-messages {
@@ -155,4 +161,35 @@
 /* When chatbox is active */
 .chatbox.active {
     transform: translateY(0);
+}
+
+.chat-message {
+    margin: 5px 0;
+    padding: 5px;
+    background-color: #f1f1f1;
+    border-radius: 4px;
+}
+
+.chat-message strong {
+    font-weight: bold;
+}
+
+
+.w-6 {
+  width: 20px;
+  margin-top: 4px;
+}
+
+.h6 {
+  height: 20px;
+}
+
+button {
+  background: none; /* Remove default background */
+  color: inherit; /* Use the current text color */
+  border: none; /* Remove default border */
+  padding: 0; /* Remove default padding */
+  font: inherit; /* Use the current font */
+  cursor: pointer; /* Keep the pointer cursor */
+  outline: inherit; /* Use default outline behavior */
 }
